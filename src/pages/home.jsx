@@ -55,8 +55,7 @@ export const Home = ({ user }) => {
       <h2>Homepage</h2>
       <section>
         <form>
-          {isSignUpActive && <legend>Sign Up</legend>}
-          {!isSignUpActive && <legend>Sign In</legend>}
+          <legend>{isSignUpActive ? "Sign Up" : "Sign In"}</legend>
           <fieldset>
             <ul>
               <li>
@@ -72,21 +71,16 @@ export const Home = ({ user }) => {
                 />
               </li>
             </ul>
-            {isSignUpActive && (
-              <button type="button" onClick={handleSignUp}>
-                Sign Up
-              </button>
-            )}
-            {!isSignUpActive && (
-              <button type="button" onClick={handleSignIn}>
-                Sign In
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={isSignUpActive ? handleSignUp : handleSignIn}
+            >
+              {isSignUpActive ? "Sign Up" : "Sign In"}
+            </button>
           </fieldset>
-          {isSignUpActive && <a onClick={handleMethodChange}>Login</a>}
-          {!isSignUpActive && (
-            <a onClick={handleMethodChange}>Create an Account</a>
-          )}
+          <a onClick={handleMethodChange}>
+            {isSignUpActive ? "Login" : "Create an Account"}
+          </a>
         </form>
       </section>
     </>
