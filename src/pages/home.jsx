@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../firebase";
 
 export const Home = () => {
@@ -12,7 +15,22 @@ export const Home = () => {
   };
 
   const handleSignUp = () => {
+    if (!email || !password) return;
     createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
+
+  const handleSignIn = () => {
+    if (!email || !password) return;
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
@@ -53,7 +71,11 @@ export const Home = () => {
               Sign Up
             </button>
           )}
-          {!isSignUpActive && <button type="button">Sign In</button>}
+          {!isSignUpActive && (
+            <button type="button" onClick={handleSignIn}>
+              Sign In
+            </button>
+          )}
         </fieldset>
         {isSignUpActive && <a onClick={handleMethodChange}>Login</a>}
         {!isSignUpActive && (
