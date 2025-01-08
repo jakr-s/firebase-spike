@@ -5,8 +5,9 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { Navigate } from "react-router-dom";
 
-export const Home = () => {
+export const Home = ({ user }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUpActive, setIsSignUpActive] = useState(true);
@@ -45,43 +46,49 @@ export const Home = () => {
   const handleEmailChange = (event) => setEmail(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
 
+  if (user) {
+    return <Navigate to="/private"></Navigate>;
+  }
+
   return (
-    <section>
+    <>
       <h2>Homepage</h2>
-      <form>
-        {isSignUpActive && <legend>Sign Up</legend>}
-        {!isSignUpActive && <legend>Sign In</legend>}
-        <fieldset>
-          <ul>
-            <li>
-              <label htmlFor="email">Email</label>
-              <input type="text" id="email" onChange={handleEmailChange} />
-            </li>
-            <li>
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                onChange={handlePasswordChange}
-              />
-            </li>
-          </ul>
-          {isSignUpActive && (
-            <button type="button" onClick={handleSignUp}>
-              Sign Up
-            </button>
-          )}
+      <section>
+        <form>
+          {isSignUpActive && <legend>Sign Up</legend>}
+          {!isSignUpActive && <legend>Sign In</legend>}
+          <fieldset>
+            <ul>
+              <li>
+                <label htmlFor="email">Email</label>
+                <input type="text" id="email" onChange={handleEmailChange} />
+              </li>
+              <li>
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  onChange={handlePasswordChange}
+                />
+              </li>
+            </ul>
+            {isSignUpActive && (
+              <button type="button" onClick={handleSignUp}>
+                Sign Up
+              </button>
+            )}
+            {!isSignUpActive && (
+              <button type="button" onClick={handleSignIn}>
+                Sign In
+              </button>
+            )}
+          </fieldset>
+          {isSignUpActive && <a onClick={handleMethodChange}>Login</a>}
           {!isSignUpActive && (
-            <button type="button" onClick={handleSignIn}>
-              Sign In
-            </button>
+            <a onClick={handleMethodChange}>Create an Account</a>
           )}
-        </fieldset>
-        {isSignUpActive && <a onClick={handleMethodChange}>Login</a>}
-        {!isSignUpActive && (
-          <a onClick={handleMethodChange}>Create an Account</a>
-        )}
-      </form>
-    </section>
+        </form>
+      </section>
+    </>
   );
 };
